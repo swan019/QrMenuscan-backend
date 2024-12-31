@@ -31,6 +31,9 @@ app.use(cookieParser());
 
 connectDB();
 
+app.get("/api", (req, res) => {
+    res.json({ message: "API Routes" });
+});
 app.use("/api/menu", getMenus);
 app.use("/api/store", storeRoutes);
 app.use("/api/menu", middleware, menuRoutes);
