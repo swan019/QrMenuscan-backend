@@ -138,8 +138,7 @@ const sendOtp = async (email, res) => {
 
 
 const validateOtp = (otp, hash) => {
-    console.log(hash);
-    
+
     const [hashedOtp, expires] = hash.split('.');
     if (Date.now() > +expires) {
         return false;

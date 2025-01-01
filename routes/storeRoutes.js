@@ -20,7 +20,6 @@ dotenv.config();
 router.post("/register", async (req, res) => {
     const { name, email, mobile, password, storeName } = req.body;
 
-    console.log(name, email, mobile, password, storeName);
 
     try {
 
@@ -57,7 +56,6 @@ router.post("/verify-otp", async (req, res) => {
 
         if (!hash) {
             const data = await Store.findOneAndDelete({ email: { $in: email } });
-            console.log(data);
             return res.status(400).json({ message: "expired OTP" });
         }
 
@@ -67,7 +65,6 @@ router.post("/verify-otp", async (req, res) => {
         // Activate the store account
         const store = await Store.findOneAndUpdate({ email }, { active: true }, { new: true }).select('-password');
 
-        console.log("Create QR : ",store);
 
         //Create QR
         const storeId = store._id;
@@ -75,7 +72,6 @@ router.post("/verify-otp", async (req, res) => {
         console.log("Menu Link: ", menuLink);
 
         const qr = await qrcode.toDataURL(menuLink);
-        console.log(qr);
 
         //QR Save in DB
         store.qrCode = qr;
@@ -83,8 +79,7 @@ router.post("/verify-otp", async (req, res) => {
 
 
         if (!store) return res.status(404).json({ message: "Store not found" });
-        console.log("User After Verified : ",store);
-
+ 
         // Create token with additional payload data
         const token = jwt.sign(
             {
@@ -114,7 +109,6 @@ router.post("/verify-otp", async (req, res) => {
 
 router.get("/createQr", middleware, async (req, res) => {
     const storeId = req.user.id;
-    console.log(storeId);
     try {
 
         const store = await Store.findById(storeId);
@@ -135,7 +129,7 @@ router.get("/createQr", middleware, async (req, res) => {
         }
 
         // Generate the QR code linking to the menu
-        const menuLink = `http://localhost:5000/menu/${storeId}`;
+        const menuLink = `${process.env.FRONTEND_URI}/menu/${storeId}`;
 
         console.log(menuLink);
 
@@ -193,9 +187,8 @@ router.post("/login", async (req, res) => {
             domain: 'qrmenuscan-backend.onrender.com', // Match your backend domain
             maxAge: 2 * 24 * 60 * 60 * 1000,
         });
+        // console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']);
 
-        console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']);
-        
         res.status(201).json({ message: "Login successful", store });
     } catch (err) {
         res.status(500).json({ error: err.message });

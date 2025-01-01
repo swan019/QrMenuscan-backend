@@ -32,9 +32,6 @@ app.use(cookieParser());
 connectDB();
 
 app.get("/api", (req, res) => {
-    console.log("REQ : ", req.header);
-    // console.log("REQ : ", req.body);
-    
     res.json({
         message: "API Routes",
         Ok: "202",

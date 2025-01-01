@@ -9,10 +9,7 @@ const router = express.Router();
 router.get("/Cheak", async (req, res) => {
   try {
     console.log(req.body);
-
     console.log("Store Id : ", req.user.id);
-    
-    
     res.status(201).json({
       message: "Cheack successfully"
     });
@@ -26,7 +23,7 @@ router.get("/Cheak", async (req, res) => {
 // Add a new menu item
 router.post("/add", async (req, res) => {
   const storeId = req.user.id;
-  const { name, halfPrice, fullPrice , special, category } = req.body;
+  const { name, halfPrice, fullPrice, special, category } = req.body;
 
   try {
     const menuItem = new MenuItem({ storeId, name, halfPrice, fullPrice, special, category });
@@ -44,7 +41,7 @@ router.get("/:storeId", async (req, res) => {
 
   try {
     const menuItems = await MenuItem.find({ storeId });
-    res.status(201).json({storeData : menuItems});
+    res.status(201).json({ storeData: menuItems });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -91,18 +88,19 @@ router.get("/special/:storeId", async (req, res) => {
 // Update a menu item
 router.put("/:itemId", async (req, res) => {
   const { itemId } = req.params;
-  const { name, price, special, category } = req.body;
+  const { name, halfPrice, fullPrice, special, category } = req.body;
 
   try {
     const updatedItem = await MenuItem.findByIdAndUpdate(
       itemId,
-      { name, price, special, category },
+      { name, halfPrice, fullPrice, special, category },
       { new: true }
     );
 
+    const { id } = req.user.id;
     if (!updatedItem) return res.status(404).json({ error: "Menu item not found" });
-    const Items = await MenuItem.find({itemId});
-    res.json({ message: "Menu item updated successfully", Data : Items });
+    const Items = await MenuItem.find({ id });
+    res.json({ message: "Menu item updated successfully", Data: Items });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -111,12 +109,13 @@ router.put("/:itemId", async (req, res) => {
 // Delete a menu item
 router.delete("/:itemId", async (req, res) => {
   const { itemId } = req.params;
-
   try {
     const deletedItem = await MenuItem.findByIdAndDelete(itemId);
     if (!deletedItem) return res.status(404).json({ error: "Menu item not found" });
-    const Items = await MenuItem.find();
-    res.json({ message: "Menu item deleted successfully", Data : Items });
+    const { id } = req.user.id;
+    console.log(id);
+    const Items = await MenuItem.find({ id });
+    res.json({ message: "Menu item deleted successfully", Data: Items });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
