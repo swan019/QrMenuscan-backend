@@ -30,7 +30,13 @@ router.post("/register", async (req, res) => {
         await store.save();
         const { newHash, otp } = await sendOtp(email);
 
-        res.cookie('hash', newHash, { maxAge: 3 * 60 * 1000, httpOnly: true }); // Cookie expires in 3 minutes
+        res.cookie('hash', newHash, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            domain: 'qrmenuscan-backend.onrender.com', // Match your backend domain
+            maxAge: 5 * 60 * 1000,
+        }); // Cookie expires in 3 minutes
 
         res.status(201).json({
             message: "Store registered. OTP sent to your email.",
