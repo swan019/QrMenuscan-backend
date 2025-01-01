@@ -185,8 +185,9 @@ router.post("/login", async (req, res) => {
             domain: 'qrmenuscan-backend.onrender.com', // Match your backend domain
             maxAge: 2 * 24 * 60 * 60 * 1000,
         });
-        
 
+        console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']);
+        
         res.status(201).json({ message: "Login successful", store });
     } catch (err) {
         res.status(500).json({ error: err.message });
