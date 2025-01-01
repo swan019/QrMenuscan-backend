@@ -32,7 +32,11 @@ app.use(cookieParser());
 connectDB();
 
 app.get("/api", (req, res) => {
-    res.json({ message: "API Routes" });
+    res.json({ message: "API Routes",
+        body: req.body,
+        cookies: req.cookies,
+        token:req.cookies.authToken 
+    });
 });
 app.use("/api/menu", getMenus);
 app.use("/api/store", storeRoutes);

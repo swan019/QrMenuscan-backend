@@ -181,6 +181,7 @@ router.post("/login", async (req, res) => {
         res.cookie('authToken', token, {
             httpOnly: true, // Prevent access from JavaScript
             secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
+            domain: "qrmenuscan-backend.onrender.com",
             maxAge: 2 * 24 * 60 * 60 * 1000, // 1* hour *24*2
         });
 
