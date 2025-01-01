@@ -101,7 +101,7 @@ router.put("/:itemId", async (req, res) => {
     );
 
     if (!updatedItem) return res.status(404).json({ error: "Menu item not found" });
-    const Items = await MenuItem.find();
+    const Items = await MenuItem.find({itemId});
     res.json({ message: "Menu item updated successfully", Data : Items });
   } catch (err) {
     res.status(500).json({ error: err.message });
