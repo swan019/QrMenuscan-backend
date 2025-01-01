@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.use(cors({
     origin: ['http://172.17.6.194:3000', "http://localhost:3000", process.env.FRONTEND_URI],
-    credentials: true, // Allow cookies and other credentials
+    credentials: true, 
     methods: ["GET", "POST", "PUT", "DELETE"],  
 }));
 
@@ -32,10 +32,16 @@ app.use(cookieParser());
 connectDB();
 
 app.get("/api", (req, res) => {
-    res.json({ message: "API Routes",
+    console.log("REQ : ", req);
+    console.log("REQ : ", req.body);
+    
+    res.json({
+        message: "API Routes",
+        Ok: "202",
+        req : req,
         body: req.body,
         cookies: req.cookies,
-        token:req.cookies.authToken 
+        token : req.cookies.authToken 
     });
 });
 app.use("/api/menu", getMenus);
