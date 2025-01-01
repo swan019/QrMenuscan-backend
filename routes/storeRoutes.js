@@ -68,7 +68,7 @@ router.post("/verify-otp", async (req, res) => {
 
         //Create QR
         const storeId = store._id;
-        const menuLink = `${process.env.BACKEND_BASE_URI}/${storeId}`;
+        const menuLink = `${process.env.FRONTEND_URI}/${storeId}`;
         console.log("Menu Link: ", menuLink);
 
         const qr = await qrcode.toDataURL(menuLink);
