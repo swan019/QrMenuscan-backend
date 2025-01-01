@@ -179,11 +179,13 @@ router.post("/login", async (req, res) => {
 
         // Store token in cookies
         res.cookie('authToken', token, {
-            httpOnly: true, // Prevent access from JavaScript
-            secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
-            domain: "qrmenuscan-backend.onrender.com",
-            maxAge: 2 * 24 * 60 * 60 * 1000, // 1* hour *24*2
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            domain: 'qrmenuscan-backend.onrender.com', // Match your backend domain
+            maxAge: 2 * 24 * 60 * 60 * 1000,
         });
+        
 
         res.status(201).json({ message: "Login successful", store });
     } catch (err) {
