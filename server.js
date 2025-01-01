@@ -32,13 +32,12 @@ app.use(cookieParser());
 connectDB();
 
 app.get("/api", (req, res) => {
-    console.log("REQ : ", req);
-    console.log("REQ : ", req.body);
+    console.log("REQ : ", req.header);
+    // console.log("REQ : ", req.body);
     
     res.json({
         message: "API Routes",
         Ok: "202",
-        req : req,
         body: req.body,
         cookies: req.cookies,
         token : req.cookies.authToken 
