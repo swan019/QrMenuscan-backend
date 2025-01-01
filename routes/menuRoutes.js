@@ -98,6 +98,9 @@ router.put("/:itemId", async (req, res) => {
     );
 
     const { id } = req.user.id;
+    console.log(id);
+    console.log(req.user);
+    
     if (!updatedItem) return res.status(404).json({ error: "Menu item not found" });
     const Items = await MenuItem.find({ id });
     res.json({ message: "Menu item updated successfully", Data: Items });
