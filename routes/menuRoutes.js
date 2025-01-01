@@ -97,12 +97,12 @@ router.put("/:itemId", async (req, res) => {
       { new: true }
     );
 
-    const { id } = req.user.id;
-    console.log(id);
+    const storeId = req.user.id;
+    console.log(storeId);
     console.log(req.user);
     
     if (!updatedItem) return res.status(404).json({ error: "Menu item not found" });
-    const Items = await MenuItem.find({ id });
+    const Items = await MenuItem.find({ storeId });
     res.json({ message: "Menu item updated successfully", Data: Items });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -115,9 +115,9 @@ router.delete("/:itemId", async (req, res) => {
   try {
     const deletedItem = await MenuItem.findByIdAndDelete(itemId);
     if (!deletedItem) return res.status(404).json({ error: "Menu item not found" });
-    const { id } = req.user.id;
-    console.log(id);
-    const Items = await MenuItem.find({ id });
+    const storeId = req.user.id;
+    console.log(storeId);
+    const Items = await MenuItem.find({ storeId });
     res.json({ message: "Menu item deleted successfully", Data: Items });
   } catch (err) {
     res.status(500).json({ error: err.message });
