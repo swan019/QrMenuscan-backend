@@ -21,7 +21,7 @@ app.use(express.json());
 
 
 app.use(cors({
-    origin: ['http://172.17.6.194:3000', "http://localhost:3000", "http://192.168.1.19:3000", process.env.FRONTEND_URI],
+    origin: [process.env.FRONTEND_URI],
     credentials: true, 
     methods: ["GET", "POST", "PUT", "DELETE"],  
 }));
